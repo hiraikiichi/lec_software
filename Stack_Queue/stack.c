@@ -1,51 +1,114 @@
 #include <stdio.h>
 
-#define N 10 // スタックの大きさをNとする
+/* 管理するデータの上限個数 */
+#define MAX_NUM 10
 
-typedef int data_t; // intと同じ型を持つ型名data_tを作成
+/* スタック構造体 */
+typedef struct STACK {
+    /* データの最後尾 */
+    int tail;
+    /* スタックされているデータ */
+    int data[MAX_NUM];
+} STACK_T;
 
-data_t stack[N]; // スタックに使う配列を宣言(intグローバル変数)
-int size; // 配列のindex スタックの要素数を保持する
+void initSack(STACK_T*);
+void printSack(STACK_T*);
+void push(STACK_T*, int);
+int pop(STACK_T*);
 
-// スタックの大きさを初期化
-void init(void) {
-    size = 0;
+/* スタックを初期化する関数 */
+void initStack(STACK_T *stack){
+
+    /* スタックを空に設定 */
+    stack->tail = -1;
 }
 
-// size 変数の値が N 以上のとき，それ以上データを追加できない
-// 「stack overflow」と出力し return で処理を終了
-void push(data_t x) {
-    if (size >= N) {
-        printf("stack overflow\n");
+/* PUSHする関数 */
+void push(STACK_T *stack, int input){
+
+    /* スタックが満杯なら何もせず関数終了 */
+    if(stack->tail >= MAX_NUM - 1){
+        printf("スタックが満杯でPUSHできません\n");
         return;
     }
-    stack[size] = x;
-    size++;
+
+    /* データをデータの最後尾の１つ後ろに格納 */
+    stack->data[stack->tail + 1] = input;
+
+    /* データの最後尾を１つ後ろに移動 */
+    stack->tail = stack->tail + 1;
 }
 
-// size 変数の値が 0 以下のとき，それ以上データを取り出せない
-// 「stack underflow」と出力して return で処理を終了
-void pop(data_t *x) {
-    if (size <= 0) {
-        printf("stack underflow\n");
-        return;
+/* POPする関数 */
+int pop(STACK_T *stack){
+    int ret = 0;
+
+    /* スタックが空なら何もせずに関数終了 */
+    if(stack->tail == -1){
+        printf("スタックが空です\n");
+        return -1;
     }
-    *x = stack[size - 1];
-    size--;
+
+    /* データの最後尾からデータを取得 */
+    ret = stack->data[stack->tail];
+
+    /* データの最後尾を１つ前にずらす */
+    stack->tail = stack->tail - 1;
+
+    /* 取得したデータを返却 */
+    return ret;
 }
 
-int main(void) {
-    // スタックの初期化
-    init();
-    
-    // スタックに値を追加
-    push(10);
-    push(20);
+/* スタックの中身を表示 */
+void printStack(STACK_T *stack){
+    int i = 0;
 
-    // スタックから値を取り出す
-    int x;
-    pop(&x);
-    printf("%d\n", x);
-    pop(&x);
-    printf("%d\n", x);
+    printf("左側がスタックの上側を表しています\n");
+    for(i = 0; i <= stack->tail; i++){
+        printf("%d,", stack->data[stack->tail - i]);
+    }
+    printf("\n");
+}
+
+int main(void){
+
+    int m;
+    int input;
+    int output;
+    STACK_T stack;
+
+    /* スタックを初期化 */
+    initStack(&stack);
+
+    while(1){
+        /* ユーザからメニューを選んでもらう */
+        printf("メニュー\n 1:PUSH\n 2:POP\n 3:スタック表示\n それ以外の数字:終了\n");
+        scanf("%d", &m);
+
+        /* 選ばれたメニューに応じて処理を分岐 */
+        if(m == 1){
+            printf("PUSHする数は？（正の整数のみ化）");
+            scanf("%d", &input);
+            if (input < 0) {
+                printf("負の値は受け付けていません!\n");
+                continue;
+            }
+            printf("%dをPUSHします\n", input);
+            push(&stack, input);
+        }else if(m == 2){
+            printf("POPします\n");
+            output = pop(&stack);
+            if(output != -1){
+                printf("%dをPOPしました\n", output);
+            }
+        } else if(m == 3){
+            printf("スタックの中身を表示します\n");
+            printStack(&stack);
+        } else {
+            /* 1, 2, 3以外の場合はwhile文を抜け出すためにbreakを実行 */
+            printf("終了します\n");
+            break;
+        }
+    }
+    return 0;
 }
