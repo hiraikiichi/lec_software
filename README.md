@@ -1,4 +1,5 @@
 # ソフトウェア特論
 
-## Stack_Queue
+## Folder Details
+### Stack_Queue
 第5回(10/29)
