@@ -63,7 +63,7 @@ void visit(i){
 
             // このノードから辺1つ隔てて，到達可能な未探索ノードを待ち行列に登録する
             for (j = 0; j < n; j++){
-                if (adj{new_node}[j] &&! visited[j] &&! in_que[j]){
+                if (adj[new_node][j] &&! visited[j] &&! in_que[j]){
                     add_que(j);
                 }
             }
