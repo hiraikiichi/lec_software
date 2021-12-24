@@ -42,7 +42,7 @@ int emptyque(){
 }
 
 // 広がり優先探索のサブルーチン
-void visit(i){
+void visit(int i){
     int j, new_node;
 
     // ノードiが未探索の場合
@@ -72,7 +72,7 @@ void visit(i){
 }
 
 // メインプログラム
-main(){
+int main(void){
     int i, j;
 
     // 探索テーブルの初期化，待ち行列の初期化
