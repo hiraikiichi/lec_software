@@ -36,7 +36,7 @@ int main(void){
     // テキスト文字列の設定
     char text[] = "AIUEO",
          // 照合文字列の設定
-         pattern[] = "EO";
+         pattern[] = "GK";
     printf("position(\"%s\", \"%s\") = %d\n", text, pattern, pos(text, pattern));
 
     return 0;
